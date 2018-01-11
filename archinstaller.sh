@@ -91,7 +91,6 @@ update_system_clock() {
 
 partition_disks() {
   echo "Partition The Disk" | section
-  echo "NOT IMPLEMENTED"
 
   # variables
   local disk disks parts leftovers
@@ -129,20 +128,17 @@ format_partitions() {
   echo "NOT IMPLEMENTED"
 
   # boot partition
-  echo "Format Boot Partition"
-  echo "[$BOOT_PART]"
-  mkfs.fat -F32 "$BOOT_PART"
+  echo "Format Boot Partition: [$BOOT_PART]"
+  mkfs.fat -F32 "$BOOT_PART" 2>&1 | indent '    '
   
   # swap partition
-  echo "Format Swap Partition"
-  echo "[$SWAP_PART]"
-  mkswap "$SWAP_PART"
-  swapon "$SWAP_PART"
+  echo "Format Swap Partition: [$SWAP_PART]"
+  mkswap "$SWAP_PART" 2>&1 | indent '    '
+  swapon "$SWAP_PART" 2>&1 | indent '    '
 
   # main partition
-  echo "Format Main Partition"
-  echo "[$MAIN_PART]"
-  mkfs.ext4 "$MAIN_PART"
+  echo "Format Main Partition: [$MAIN_PART]"
+  mkfs.ext4 "$MAIN_PART" 2>&1 | indent '    '
 }
 
 mount_filesystem() {
