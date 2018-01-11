@@ -128,14 +128,17 @@ format_partitions() {
   echo "NOT IMPLEMENTED"
 
   # boot partition
-  mkfs.fat -F32 "$BOOT_PART"
+  echo "Format Boot Partition"
+  mkfs.fat -F32 "$BOOT_PART" | indent '    '
   
   # swap partition
-  mkswap "$SWAP_PART"
-  swapon "$SWAP_PART"
+  echo "Format Swap Partition"
+  mkswap "$SWAP_PART" | indent '    '
+  swapon "$SWAP_PART" | indent '    '
 
   # main partition
-  mkfs.ext4 "$BOOT_PART"
+  echo "Format Main Partition"
+  mkfs.ext4 "$MAIN_PART" | indent '    '
 }
 
 mount_filesystem() {
