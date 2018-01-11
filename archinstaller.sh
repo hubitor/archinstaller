@@ -4,6 +4,10 @@ CLEAR="\033[0m"
 _CLEAR="\\033\[0m"
 BOLD="\033[1m"
 RED="\033[0;31m"
+INSTALL_DISK=
+BOOT_PART=
+SWAP_DISK=
+MAIN_PART=
 
 clr() {
   while read line; do
@@ -90,7 +94,7 @@ partition_disks() {
   echo "NOT IMPLEMENTED"
 
   # variables
-  local install_disk disk disks leftovers boot_part swap_part main_part
+  local disk disks parts leftovers
   readarray -t disks <<< "$(lsblk -lnp)"
   
   # disk choice menu
@@ -99,16 +103,18 @@ partition_disks() {
   let "disk--"
 
   # get the path to the 
-  install_disk="$(echo "${disks[$disk]}" | awk '{print $1}')"
+  INSTALL_DISK="$(echo "${disks[$disk]}" | awk '{print $1}')"
   echo "${install_disk}"
 
-  # create boot partition
-  parted "$install_disk" mklabel gpt
-  parted "$install_disk" mkpart primary fat32 0% 512m
-  parted "$install_disk" toggle 1 boot
-  parted "$install_disk" toggle 1 esp
-  parted "$install_disk" mkpart primary linux-swap 512M 8G  # swap partition
-  parted "$install_disk" mkpart primary ext4 8G 100%  # main partition
+  # create partition
+  parted "$INSTALL_DISK" mklabel gpt
+  parted "$INSTALL_DISK" mkpart primary fat32 0% 512m  # boot partition
+  parted "$INSTALL_DISK" toggle 1 boot
+  parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
+  parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
+
+  parts="$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
+  echo "$parts"
 }
 
 format_partitions() {
