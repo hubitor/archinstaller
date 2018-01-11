@@ -7,7 +7,7 @@ RED="\033[0;31m"
 INSTALL_DISK=
 BOOT_PART=
 SWAP_DISK=
-MAIN_PART=
+ROOT_PART=
 
 clr() {
   while read line; do
@@ -117,15 +117,14 @@ partition_disks() {
     "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
   BOOT_PART="${parts[0]}"
   SWAP_PART="${parts[1]}"
-  MAIN_PART="${parts[2]}"
+  ROOT_PART="${parts[2]}"
   #echo "boot: $BOOT_PART"
   #echo "swap: $SWAP_PART"
-  #echo "main: $MAIN_PART"
+  #echo "main: $ROOT_PART"
 }
 
 format_partitions() {
   echo "Format Disk Partitions" | section
-  echo "NOT IMPLEMENTED"
 
   # boot partition
   echo "Format Boot Partition: [$BOOT_PART]"
@@ -137,12 +136,20 @@ format_partitions() {
   swapon "$SWAP_PART" 2>&1 | indent '    '
 
   # main partition
-  echo "Format Main Partition: [$MAIN_PART]"
-  mkfs.ext4 "$MAIN_PART" 2>&1 | indent '    '
+  echo "Format Main Partition: [$ROOT_PART]"
+  mkfs.ext4 "$ROOT_PART" 2>&1 | indent '    '
 }
 
 mount_filesystem() {
+  echo "Mount Filesystems" | section
   echo "NOT IMPLEMENTED"
+
+  echo "Root Partition: [$ROOT_PART]"
+  mount "$ROOT_PART" /mnt | indent '    '
+
+  echo "Boot Partition: [$BOOT_PART]"
+  mkdir /mnt/boot
+  mount "$BOOT_PART" /mnt/boot | indent '    '
 }
 
 select_mirrors() {
