@@ -114,7 +114,7 @@ partition_disks() {
   parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
 
   # assign partition paths
-  parts="$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
+  readarray parts <<< "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
   BOOT_PART="${parts[0]}"
   SWAP_PART="${parts[1]}"
   MAIN_PART="${parts[2]}"
