@@ -4,7 +4,6 @@ CLEAR="\033[0m"
 _CLEAR="\\033\[0m"
 BOLD="\033[1m"
 RED="\033[0;31m"
-declare -a BUILDARRAY
 
 clr() {
   while read line; do
@@ -91,7 +90,7 @@ partition_disks() {
   echo "NOT IMPLEMENTED"
 
   # variables
-  local install_disk disk disks leftovers
+  local install_disk disk disks leftovers boot_part swap_part main_part
   readarray -t disks <<< "$(lsblk -lnp)"
   
   # disk choice menu
@@ -103,15 +102,18 @@ partition_disks() {
   install_disk="$(echo "${disks[$disk]}" | awk '{print $1}')"
   echo "${install_disk}"
 
-  # partition the drive
+  # create boot partition
   parted "$install_disk" mklabel gpt
-  parted "$install_disk" mkpart primary fat32 0% 512m  # boot partition
-  parted "$install_disk" mkpart primary linux-swap(v1) 512M 8G  # swap partition
+  parted "$install_disk" mkpart primary fat32 0% 512m
+  parted "$install_disk" toggle 1 boot
+  parted "$install_disk" toggle 1 esp
+  parted "$install_disk" mkpart primary linux-swap 512M 8G  # swap partition
   parted "$install_disk" mkpart primary ext4 8G 100%  # main partition
 }
 
 format_partitions() {
   echo "NOT IMPLEMENTED"
+  boot_part="$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
 }
 
 mount_filesystem() {
