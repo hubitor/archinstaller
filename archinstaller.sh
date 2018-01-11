@@ -129,16 +129,16 @@ format_partitions() {
 
   # boot partition
   echo "Format Boot Partition"
-  mkfs.fat -F32 "$BOOT_PART" | indent '    '
+  mkfs.fat -F32 "$BOOT_PART"
   
   # swap partition
   echo "Format Swap Partition"
-  mkswap "$SWAP_PART" | indent '    '
-  swapon "$SWAP_PART" | indent '    '
+  mkswap "$SWAP_PART"
+  swapon "$SWAP_PART"
 
   # main partition
   echo "Format Main Partition"
-  mkfs.ext4 "$MAIN_PART" | indent '    '
+  mkfs.ext4 "$MAIN_PART"
 }
 
 mount_filesystem() {
