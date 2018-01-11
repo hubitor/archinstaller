@@ -118,14 +118,24 @@ partition_disks() {
   BOOT_PART="${parts[0]}"
   SWAP_PART="${parts[1]}"
   MAIN_PART="${parts[2]}"
-  echo "boot: $BOOT_PART"
-  echo "swap: $SWAP_PART"
-  echo "main: $MAIN_PART"
+  #echo "boot: $BOOT_PART"
+  #echo "swap: $SWAP_PART"
+  #echo "main: $MAIN_PART"
 }
 
 format_partitions() {
   echo "Format Disk Partitions" | section
   echo "NOT IMPLEMENTED"
+
+  # boot partition
+  mkfs.fat -F32 "$BOOT_PART"
+  
+  # swap partition
+  mkswap "$SWAP_PART"
+  swapon "$SWAP_PART"
+
+  # main partition
+  mkfs.ext4 "$BOOT_PART"
 }
 
 mount_filesystem() {
@@ -195,6 +205,5 @@ install_menu() {
   reboot_system
 }
 
-#install_menu
-partition_disks
+install_menu
 
