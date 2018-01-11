@@ -113,13 +113,19 @@ partition_disks() {
   parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
   parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
 
+  # assign partition paths
   parts="$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
-  echo "$parts"
+  BOOT_PART="${parts[0]}"
+  SWAP_PART="${parts[1]}"
+  MAIN_PART="${parts[2]}"
+  echo "boot: $BOOT_PART"
+  echo "swap: $SWAP_PART"
+  echo "main: $MAIN_PART"
 }
 
 format_partitions() {
+  echo "Format Disk Partitions" | section
   echo "NOT IMPLEMENTED"
-  boot_part="$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
 }
 
 mount_filesystem() {
