@@ -129,15 +129,18 @@ format_partitions() {
 
   # boot partition
   echo "Format Boot Partition"
+  echo "[$BOOT_PART]"
   mkfs.fat -F32 "$BOOT_PART"
   
   # swap partition
   echo "Format Swap Partition"
+  echo "[$SWAP_PART]"
   mkswap "$SWAP_PART"
   swapon "$SWAP_PART"
 
   # main partition
   echo "Format Main Partition"
+  echo "[$MAIN_PART]"
   mkfs.ext4 "$MAIN_PART"
 }
 
