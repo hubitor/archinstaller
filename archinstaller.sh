@@ -305,11 +305,11 @@ install_menu() {
   set_hostname
   configure_network
   set_root_password
-  #set_bootloader
+  set_bootloader
   reboot_system
 }
 
-#install_menu
+install_menu
 #select_mirrors
 #install_packages
-set_bootloader
+#set_bootloader
