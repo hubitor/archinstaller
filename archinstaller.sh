@@ -339,12 +339,12 @@ install_menu() {
   reboot_system
 }
 
-install_menu
+#install_menu
 #set_keyboard_layout
 #verify_boot_mode
 #connect_internet
 #update_system_clock
-#partition_disks
+partition_disks
 #format_partitions
 #mount_filesystem
 #select_mirrors
