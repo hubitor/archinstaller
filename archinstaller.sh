@@ -142,18 +142,19 @@ format_partitions() {
 
 mount_filesystem() {
   echo "Mount Filesystems" | section
-  echo "NOT IMPLEMENTED"
 
-  echo "- Root Partition: [$ROOT_PART]"
   mount "$ROOT_PART" /mnt | indent '    '
-
-  echo "- Boot Partition: [$BOOT_PART]"
   mkdir /mnt/boot
   mount "$BOOT_PART" /mnt/boot | indent '    '
+
+  lsblk
 }
 
 select_mirrors() {
+  echo "Select Mirrors" | section
   echo "NOT IMPLEMENTED"
+
+  
 }
 
 install_packages() {
