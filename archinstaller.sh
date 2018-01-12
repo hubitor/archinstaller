@@ -16,6 +16,7 @@ BOLD="\033[1m"
 RED="\033[0;31m"
 
 # don't touch stuff
+BOOT_MODE=
 INSTALL_DISK=
 BOOT_PART=
 SWAP_DISK=
@@ -81,9 +82,12 @@ set_keyboard_layout() {
 verify_boot_mode() {
   echo "Verify Boot Mode" | section
   
-  if [ ! -d "/sys/firmware/efi/efivars" ]; then
-    echo "This installer only supports EFI systems currently" | error
+  if [ -e "/sys/firmware/efi/efivars" ]; then
+    BOOT_MODE="UEFI"
+  else
+    BOOT_MODE="BIOS"
   fi
+  echo "Boot Mode: "$BOOT_MODE""
 }
 
 connect_internet() {
