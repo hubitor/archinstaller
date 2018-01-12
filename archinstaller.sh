@@ -144,10 +144,10 @@ mount_filesystem() {
   echo "Mount Filesystems" | section
   echo "NOT IMPLEMENTED"
 
-  echo "Root Partition: [$ROOT_PART]"
+  echo "- Root Partition: [$ROOT_PART]"
   mount "$ROOT_PART" /mnt | indent '    '
 
-  echo "Boot Partition: [$BOOT_PART]"
+  echo "- Boot Partition: [$BOOT_PART]"
   mkdir /mnt/boot
   mount "$BOOT_PART" /mnt/boot | indent '    '
 }
