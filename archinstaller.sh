@@ -5,6 +5,8 @@ ROOT_MOUNT="/mnt"
 BOOT_MOUNT="/mnt/boot"
 MIRRORLIST="/etc/pacman.d/mirrorlist"
 COUNTRY="United States"
+REGION=""
+CITY=""
 PKGS="pkgs"
 
 # color stuff
@@ -190,17 +192,28 @@ install_packages() {
 }
 
 generate_fstab() {
-  echo "Generate fstab" | section
+  echo "Generate Fstab" | section
 
   genfstab -U "$ROOT_MOUNT" >> "$ROOT_MOUNT"/etc/fstab
 }
 
 set_timezone() {
+  echo "Set Localtime" | section
   echo "NOT IMPLEMENTED"
+
+  arch-chroot "$ROOT_MOUNT" \
+    ln -sf /usr/share/zoneinfo/"$REGION"/"$CITY" /etc/localtime
+
+  arch-chroot "$ROOT_MOUNT" hwclock --systohc
 }
 
 set_locale() {
+  echo "Set Locale" | section
   echo "NOT IMPLEMENTED"
+
+  echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
+  arch-chroot "$ROOT_MOUNT" bash
+  arch-chroot "$ROOT_MOUNT" locale-gen
 }
 
 set_hostname() {
