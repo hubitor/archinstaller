@@ -272,7 +272,7 @@ install_grub() {
   else
     arch-chroot "$ROOT_MOUNT" \
       grub-install \
-        --target==x86_64-efi \
+        --target==i386-pc \
         "$ROOT_PART"
     arch-chroot "$ROOT_MOUNT" \
       grub-mkconfig -o /boot/grub/grub.cfg
@@ -337,11 +337,11 @@ install_menu() {
   set_hostname
   configure_network
   set_root_password
-  #set_bootloader
+  set_bootloader
   reboot_system
 }
 
-install_menu
+#install_menu
 #set_keyboard_layout
 #verify_boot_mode
 #connect_internet
@@ -357,5 +357,5 @@ install_menu
 #set_hostname
 #configure_network
 #set_root_password
-#set_bootloader
+set_bootloader
 #reboot_system
