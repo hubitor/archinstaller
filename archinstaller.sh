@@ -241,7 +241,7 @@ set_bootloader() {
   echo "Setup Bootloader" | section
   echo "NOT IMPLEMENTED"
 
-  arch-chroot "$ROOT_MOUNT" pacman -S grub efibootmgr
+  pacstrap "$ROOT_MOUNT" grub efibootmgr
   arch-chroot "$ROOT_MOUNT" \
     grub-install \
       --target=x86_64-efi \
