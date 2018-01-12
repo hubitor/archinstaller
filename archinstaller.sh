@@ -211,7 +211,8 @@ set_locale() {
   echo "Set Locale" | section
 
   echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
-  arch-chroot "$ROOT_MOUNT" bash
+  sleep 1
+  vim "$ROOT_MOUNT"/etc/locale.gen
   arch-chroot "$ROOT_MOUNT" locale-gen
 }
 
