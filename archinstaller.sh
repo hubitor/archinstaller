@@ -258,7 +258,10 @@ install_systemd_boot() {
   cat loader.conf > "$BOOT_MOUNT"/loader/loader.conf
 
   echo "title arch" > arch.conf
-  echo "initrd" >> arch.conf
+  echo "linux /vmlinuz-linux" >> arch.conf
+  echo "initrd /intel-ucode.img" >> arch.conf
+  echo "initrd /initramfs-linux.img" >> arch.conf
+  cat arch.conf > "$BOOT_MOUNT"/loader/entries/arch.conf
 }
 
 set_bootloader() {
