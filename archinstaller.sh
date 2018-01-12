@@ -241,12 +241,14 @@ set_bootloader() {
   echo "Setup Bootloader" | section
   echo "NOT IMPLEMENTED"
 
-  pacstrap "$ROOT_MOUNT" grub efibootmgr
+  pacstrap "$ROOT_MOUNT" grub efibootmgr intel-ucode
   arch-chroot "$ROOT_MOUNT" \
     grub-install \
       --target=x86_64-efi \
       --efi-directory=/boot \
       --bootloader-id=boot
+  arch-chroot "$ROOT_MOUNT" \
+    grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 reboot_system() {
