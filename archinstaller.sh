@@ -120,19 +120,34 @@ partition_disks() {
   INSTALL_DISK="$(echo "${disks[$disk]}" | awk '{print $1}')"
   echo "${install_disk}"
 
-  # create partition
-  parted "$INSTALL_DISK" mklabel gpt
-  parted "$INSTALL_DISK" mkpart primary fat32 0% 512m  # boot partition
-  parted "$INSTALL_DISK" toggle 1 boot
-  parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
-  parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
-
-  # assign partition paths
-  readarray -t parts <<< \
-    "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
-  BOOT_PART="${parts[0]}"
-  SWAP_PART="${parts[1]}"
-  ROOT_PART="${parts[2]}"
+  if [ "$BOOT_MODE" == "UEFI" ]; then
+    # gpt and UEFI
+    parted "$INSTALL_DISK" mklabel gpt
+    parted "$INSTALL_DISK" mkpart primary fat32 0% 512m  # boot partition
+    parted "$INSTALL_DISK" toggle 1 boot
+    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
+    parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
+    
+    # assign partition paths
+    readarray -t parts <<< \
+      "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
+    BOOT_PART="${parts[0]}"
+    SWAP_PART="${parts[1]}"
+    ROOT_PART="${parts[2]}"
+  else
+    # mbr and BIOS
+    parted "$INSTALL_DISK" mklabel msdos
+    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
+    parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
+    parted "$INSTALL_DISK" toggle 2 boot
+    
+    # assign partition paths
+    readarray -t parts <<< \
+      "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
+    BOOT_PART="${parts[1]}"
+    SWAP_PART="${parts[0]}"
+    ROOT_PART="${parts[1]}"
+  fi
   #echo "boot: $BOOT_PART"
   #echo "swap: $SWAP_PART"
   #echo "main: $ROOT_PART"
@@ -142,9 +157,11 @@ format_partitions() {
   echo "Format Disk Partitions" | section
 
   # boot partition
-  echo -e "\nFormat Boot Partition: [$BOOT_PART]"
-  mkfs.fat -F32 "$BOOT_PART" 2>&1 | indent '    '
-  
+  if [ "$BOOT_MODE" == "UEFI" ]; then
+    echo -e "\nFormat Boot Partition: [$BOOT_PART]"
+    mkfs.fat -F32 "$BOOT_PART" 2>&1 | indent '    '
+  fi
+
   # swap partition
   echo -e "\nFormat Swap Partition: [$SWAP_PART]"
   mkswap "$SWAP_PART" 2>&1 | indent '    '
@@ -159,8 +176,11 @@ mount_filesystem() {
   echo "Mount Filesystems" | section
 
   mount "$ROOT_PART" "$ROOT_MOUNT" | indent '    '
-  mkdir /mnt/boot
-  mount "$BOOT_PART" "$BOOT_MOUNT" | indent '    '
+
+  if [ "$BOOT_MODE" == "UEFI" ]; then
+    mkdir /mnt/boot
+    mount "$BOOT_PART" "$BOOT_MOUNT" | indent '    '
+  fi
 
   lsblk
 }
@@ -241,13 +261,22 @@ set_root_password() {
 }
 
 install_grub() {
-  arch-chroot "$ROOT_MOUNT" \
-    grub-install \
-      --target=x86_64-efi \
-      --efi-directory=/boot \
-      --bootloader-id=boot
-  arch-chroot "$ROOT_MOUNT" \
-    grub-mkconfig -o /boot/grub/grub.cfg
+  if [ "$BOOT_MODE" == "UEFI" ]; then
+    arch-chroot "$ROOT_MOUNT" \
+      grub-install \
+        --target=x86_64-efi \
+        --efi-directory=/boot \
+        --bootloader-id=boot
+    arch-chroot "$ROOT_MOUNT" \
+      grub-mkconfig -o /boot/grub/grub.cfg
+  else
+    arch-chroot "$ROOT_MOUNT" \
+      grub-install \
+        --target==x86_64-efi \
+        "$ROOT_PART"
+    arch-chroot "$ROOT_MOUNT" \
+      grub-mkconfig -o /boot/grub/grub.cfg
+  fi
 }
 
 install_systemd_boot() {
@@ -269,19 +298,20 @@ install_systemd_boot() {
 set_bootloader() {
   echo "Setup Bootloader" | section
 
-  local loader
-  
-  echo -e "grub\nsystemd" | menu "Select bootloader:"
-  read -rp "bootloader: " loader
+  #local loader
+  #
+  #echo -e "grub\nsystemd" | menu "Select bootloader:"
+  #read -rp "bootloader: " loader
 
-  case "$loader" in
-    "1")
-      install_grub
-      ;;
-    "2")
-      install_systemd_boot
-      ;;
-  esac
+  #case "$loader" in
+  #  "1")
+  #    install_grub
+  #    ;;
+  #  "2")
+  #    install_systemd_boot
+  #    ;;
+  #esac
+  install_grub
 }
 
 reboot_system() {
