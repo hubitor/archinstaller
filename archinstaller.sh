@@ -164,14 +164,14 @@ select_mirrors() {
     {
       if (cond == 1) {
         print $0;
-        cond = 2;
+        cond++;
       }
       else if (cond == 2) {
         print $0;
         cond = 0;
       }
     }
-  ' | tee "$mirrorlist"
+  ' | tee "$mirrorlist" | indent '    '
 }
 
 install_packages() {
@@ -233,5 +233,5 @@ install_menu() {
   reboot_system
 }
 
-#install_menu
-select_mirrors
+install_menu
+#select_mirrors

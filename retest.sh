@@ -5,6 +5,7 @@ swapoff /dev/vda2
 umount /mnt/boot
 umount /mnt
 parted /dev/vda mklabel gpt
+cat mirrorlist.bak > mirrorlist
 #rm archinstaller.sh
 
 # download the installer script
