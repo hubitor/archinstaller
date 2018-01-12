@@ -238,11 +238,7 @@ set_root_password() {
   arch-chroot "$ROOT_MOUNT" passwd
 }
 
-set_bootloader() {
-  echo "Setup Bootloader" | section
-  echo "NOT IMPLEMENTED"
-
-  pacstrap "$ROOT_MOUNT" grub efibootmgr intel-ucode
+install_grub() {
   arch-chroot "$ROOT_MOUNT" \
     grub-install \
       --target=x86_64-efi \
@@ -250,6 +246,25 @@ set_bootloader() {
       --bootloader-id=boot
   arch-chroot "$ROOT_MOUNT" \
     grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+install_systemd_boot() {
+  arch-chroot "$ROOT_MOUNT" \
+    bootctl --path=/boot install
+
+  echo  "default arch" > loader.conf
+  echo  "timeout 4" >> loader.conf
+  echo  "editor 0" >> loader.conf
+  cat loader.conf > "$BOOT_MOUNT"/loader/loader.conf
+
+  echo "title arch" > arch.conf
+  echo "initrd" >> arch.conf
+}
+
+set_bootloader() {
+  echo "Setup Bootloader" | section
+
+
 }
 
 reboot_system() {
@@ -275,7 +290,7 @@ install_menu() {
   set_hostname
   configure_network
   set_root_password
-  set_bootloader
+  #set_bootloader
   reboot_system
 }
 
