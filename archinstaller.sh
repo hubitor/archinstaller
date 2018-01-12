@@ -270,16 +270,8 @@ install_grub() {
     arch-chroot "$ROOT_MOUNT" \
       grub-mkconfig -o /boot/grub/grub.cfg
   else
-    readarray -t parts <<< \
-      "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
-    BOOT_PART="${parts[1]}"
-    SWAP_PART="${parts[0]}"
-    ROOT_PART="${parts[1]}"
-    echo "boot partition: $BOOT_PART"
-    echo "swap partition: $SWAP_PART"
-    echo "main partition: $ROOT_PART"
     arch-chroot "$ROOT_MOUNT" \
-      grub-install --target=i386-pc "$ROOT_PART"
+      echo grub-install --target=i386-pc "$INSTALL_DISK"
     arch-chroot "$ROOT_MOUNT" \
       grub-mkconfig -o /boot/grub/grub.cfg
   fi
