@@ -279,7 +279,7 @@ install_grub() {
     echo "swap partition: $SWAP_PART"
     echo "main partition: $ROOT_PART"
     arch-chroot "$ROOT_MOUNT" \
-      echo "grub-install --target=i386-pc "$ROOT_PART""
+      grub-install --target=i386-pc "$ROOT_PART"
     arch-chroot "$ROOT_MOUNT" \
       grub-mkconfig -o /boot/grub/grub.cfg
   fi
