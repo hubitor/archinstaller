@@ -154,7 +154,19 @@ select_mirrors() {
   echo "Select Mirrors" | section
   echo "NOT IMPLEMENTED"
 
-  
+  local mirrorlist="mirrorlist"
+  local country="United States"
+
+  cat "$mirrorlist" | awk "
+    BEGIN {cont = false}
+    /## "$country"/ {cont = true}
+    {
+      if (cont) {
+        print $0;
+        cont = false;
+      }
+    }
+  "
 }
 
 install_packages() {
