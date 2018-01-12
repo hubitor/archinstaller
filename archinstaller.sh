@@ -209,7 +209,6 @@ set_timezone() {
 
 set_locale() {
   echo "Set Locale" | section
-  echo "NOT IMPLEMENTED"
 
   echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
   arch-chroot "$ROOT_MOUNT" bash
@@ -217,19 +216,37 @@ set_locale() {
 }
 
 set_hostname() {
-  echo "NOT IMPLEMENTED"
+  echo "Set Hostname" | section
+
+  local hostname
+  read -rp "Hostname: " hostname
+
+  arch-chroot "$ROOT_MOUNT" echo "$hostname" > /etc/hostname
+  arch-chroot "$ROOT_MOUNT" \
+    echo -e "127.0.1.1\t"$hostname".localdomain\t"$hostname"" > /etc/hostname
 }
 
 configure_network() {
-  echo "NOT IMPLEMENTED"
+  echo "Configure Network" | section
+  echo "doesnt do anything"
 }
 
 set_root_password() {
-  echo "NOT IMPLEMENTED"
+  echo "Set Root Password" | section
+
+  arch-chroot "$ROOT_MOUNT" passwd
 }
 
 set_bootloader() {
+  echo "Setup Bootloader" | section
   echo "NOT IMPLEMENTED"
+
+  arch-chroot "$ROOT_MOUNT" pacman -S grub efibootmgr
+  arch-chroot "$ROOT_MOUNT" \
+    grub-install \
+      --target=x86_64-efi \
+      --efi-directory=/boot \
+      --bootloader-id=boot
 }
 
 reboot_system() {
