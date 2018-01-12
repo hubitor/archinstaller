@@ -127,16 +127,16 @@ format_partitions() {
   echo "Format Disk Partitions" | section
 
   # boot partition
-  echo "Format Boot Partition: [$BOOT_PART]"
+  echo -e "\nFormat Boot Partition: [$BOOT_PART]"
   mkfs.fat -F32 "$BOOT_PART" 2>&1 | indent '    '
   
   # swap partition
-  echo "Format Swap Partition: [$SWAP_PART]"
+  echo -e "\nFormat Swap Partition: [$SWAP_PART]"
   mkswap "$SWAP_PART" 2>&1 | indent '    '
   swapon "$SWAP_PART" 2>&1 | indent '    '
 
   # main partition
-  echo "Format Main Partition: [$ROOT_PART]"
+  echo -e "\nFormat Main Partition: [$ROOT_PART]"
   mkfs.ext4 "$ROOT_PART" 2>&1 | indent '    '
 }
 
