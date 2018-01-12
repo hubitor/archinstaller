@@ -159,7 +159,7 @@ select_mirrors() {
 
   cat "$mirrorlist" | awk "
     BEGIN {cont = false}
-    /## "$country"/ {cont = true}
+    /\#\# "$country"/ {cont = true}
     {
       if (cont) {
         print $0;
