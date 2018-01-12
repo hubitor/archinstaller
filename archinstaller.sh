@@ -260,16 +260,16 @@ reboot_system() {
 }
 
 install_menu() {
-  #set_keyboard_layout
-  #verify_boot_mode
-  #connect_internet
-  #update_system_clock
-  #partition_disks
-  #format_partitions
-  #mount_filesystem
-  #select_mirrors
-  #install_packages
-  #generate_fstab
+  set_keyboard_layout
+  verify_boot_mode
+  connect_internet
+  update_system_clock
+  partition_disks
+  format_partitions
+  mount_filesystem
+  select_mirrors
+  install_packages
+  generate_fstab
   set_timezone
   set_locale
   set_hostname
