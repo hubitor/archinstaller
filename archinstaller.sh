@@ -118,7 +118,7 @@ partition_disks() {
 
   # get the path to the 
   INSTALL_DISK="$(echo "${disks[$disk]}" | awk '{print $1}')"
-  echo "${install_disk}"
+  echo "$INSTALL_DISK"
 
   if [ "$BOOT_MODE" == "UEFI" ]; then
     # gpt and UEFI
