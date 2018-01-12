@@ -271,7 +271,7 @@ install_grub() {
       grub-mkconfig -o /boot/grub/grub.cfg
   else
     arch-chroot "$ROOT_MOUNT" \
-      echo grub-install --target=i386-pc "$INSTALL_DISK"
+      grub-install --target=i386-pc "$INSTALL_DISK"
     arch-chroot "$ROOT_MOUNT" \
       grub-mkconfig -o /boot/grub/grub.cfg
   fi
