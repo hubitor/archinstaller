@@ -157,16 +157,21 @@ select_mirrors() {
   local mirrorlist="mirrorlist"
   local country="United States"
 
-  cat "$mirrorlist" | awk "
-    BEGIN {cont = false}
-    /"$country"/ {cont = true}
+  mv "$mirrorlist" "$mirrorlist".bak
+  cat "$mirrorlist".bak | awk '
+    BEGIN {cond = 0}
+    /'"$country"'/ {cond = 1}
     {
-      if (cont) {
+      if (cond == 1) {
         print $0;
-        cont = false;
+        cond = 2;
+      }
+      else if (cond == 2) {
+        print $0;
+        cond = 0;
       }
     }
-  "
+  ' | tee "$mirrorlist"
 }
 
 install_packages() {
@@ -228,5 +233,5 @@ install_menu() {
   reboot_system
 }
 
-install_menu
-
+#install_menu
+select_mirrors
