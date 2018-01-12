@@ -1,13 +1,24 @@
 #!/bin/bash
 
+# config stuff
+ROOT_MOUNT="/mnt"
+BOOT_MOUNT="/mnt/boot"
+MIRRORLIST="/etc/pacman.d/mirrorlist"
+COUNTRY="United States"
+PKGS="pkgs"
+
+# color stuff
 CLEAR="\033[0m"
 _CLEAR="\\033\[0m"
 BOLD="\033[1m"
 RED="\033[0;31m"
+
+# don't touch stuff
 INSTALL_DISK=
 BOOT_PART=
 SWAP_DISK=
 ROOT_PART=
+
 
 clr() {
   while read line; do
@@ -93,7 +104,7 @@ partition_disks() {
   echo "Partition The Disk" | section
 
   # variables
-  local disk disks parts leftovers
+  local disk disks parts
   readarray -t disks <<< "$(lsblk -lnp)"
   
   # disk choice menu
@@ -143,24 +154,20 @@ format_partitions() {
 mount_filesystem() {
   echo "Mount Filesystems" | section
 
-  mount "$ROOT_PART" /mnt | indent '    '
+  mount "$ROOT_PART" "$ROOT_MOUNT" | indent '    '
   mkdir /mnt/boot
-  mount "$BOOT_PART" /mnt/boot | indent '    '
+  mount "$BOOT_PART" "$BOOT_MOUNT" | indent '    '
 
   lsblk
 }
 
 select_mirrors() {
   echo "Select Mirrors" | section
-  echo "NOT IMPLEMENTED"
 
-  local mirrorlist="mirrorlist"
-  local country="United States"
-
-  mv "$mirrorlist" "$mirrorlist".bak
-  cat "$mirrorlist".bak | awk '
+  cp "$MIRRORLIST" mirrorlist.bak
+  cat mirrorlist.bak | awk '
     BEGIN {cond = 0}
-    /'"$country"'/ {cond = 1}
+    /'"$COUNTRY"'/ {cond = 1}
     {
       if (cond == 1) {
         print $0;
@@ -171,15 +178,21 @@ select_mirrors() {
         cond = 0;
       }
     }
-  ' | tee "$mirrorlist" | indent '    '
+  ' | tee "$MIRRORLIST" | indent '    '
 }
 
 install_packages() {
-  echo "NOT IMPLEMENTED"
+  echo "Install Packages" | section
+
+  for pkg in $(cat "$PKGS"); do
+    pacstrap "$ROOT_MOUNT" "$pkg"
+  done
 }
 
 generate_fstab() {
-  echo "NOT IMPLEMENTED"
+  echo "Generate fstab" | section
+
+  genfstab -U "$ROOT_MOUNT" >> "$ROOT_MOUNT"/etc/fstab
 }
 
 set_timezone() {
@@ -233,5 +246,6 @@ install_menu() {
   reboot_system
 }
 
-install_menu
+#install_menu
 #select_mirrors
+install_packages
