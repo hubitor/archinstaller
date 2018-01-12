@@ -337,7 +337,7 @@ install_menu() {
   set_hostname
   configure_network
   set_root_password
-  set_bootloader
+  #set_bootloader
   reboot_system
 }
 
