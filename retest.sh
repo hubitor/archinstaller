@@ -8,8 +8,8 @@ parted /dev/vda mklabel gpt
 rm archinstaller.sh
 
 # download the installer script
-curl https://raw.githubusercontent.com/jeremyCloud/archinstaller/master/archinstaller.sh -o \
-  archinstaller.sh
+#curl https://raw.githubusercontent.com/jeremyCloud/archinstaller/master/archinstaller.sh -o \
+#  archinstaller.sh
 
 # run the installer
 bash archinstaller.sh
