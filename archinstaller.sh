@@ -267,7 +267,19 @@ install_systemd_boot() {
 set_bootloader() {
   echo "Setup Bootloader" | section
 
+  local loader
+  
+  echo -e "grub\nsystemd" | menu "Select bootloader:"
+  read -rp "bootloader: " loader
 
+  case "$loader" in
+    "1")
+      install_grub
+      ;;
+    "2")
+      install_systemd_boot
+      ;;
+  esac
 }
 
 reboot_system() {
@@ -297,6 +309,7 @@ install_menu() {
   reboot_system
 }
 
-install_menu
+#install_menu
 #select_mirrors
 #install_packages
+set_bootloader
