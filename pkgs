@@ -2,6 +2,7 @@ base
 base-devel
 gnome
 gnome-extra
+gnome-terminal
 firefox
 evince
 virt-manager

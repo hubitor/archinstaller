@@ -345,6 +345,10 @@ add_users() {
       
       arch-chroot "$ROOT_MOUNT" \
         useradd -mUG "$groups" "$user"
+
+      arch-chroot "$ROOT_MOUNT" \
+        passwd "$user"
+
     fi
   done
 }
