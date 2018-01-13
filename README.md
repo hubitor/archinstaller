@@ -8,7 +8,10 @@ Just add any packages you want installed to the pkgs text file.
 
 Using a a base install image run the following.
 ```
-mount -o remount,size=2G /run/archiso/cowspace && pacman -Sy git && git clone https://github.com/jeremyCloud/archinstaller && cd archinstaller
+mount -o remount,size=2G /run/archiso/cowspace
+pacman -Sy git
+git clone https://github.com/jeremyCloud/archinstaller
+cd archinstaller
 ```
 update the pkgs file then:
 ```
