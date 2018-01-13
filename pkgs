@@ -20,6 +20,8 @@ vim
 aspell
 aspell-en
 mplayer
+bash-completion
 grub
 efibootmgr
 intel-ucode
+gdm

@@ -316,9 +316,15 @@ set_bootloader() {
 
 reboot_system() {
   echo "You can reboot your system now." | section
-  #echo "Rebooting..."
-  #sleep 2
-  #reboot
+
+  arch-chroot "$ROOT_MOUNT" \
+    systemctl enable gdm.service
+
+  echo "Press any key to reboot."
+  read
+  echo "Rebooting..."
+  sleep 2
+  reboot
 }
 
 install_menu() {
