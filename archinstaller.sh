@@ -330,7 +330,7 @@ enable_services() {
     systemctl enable bluetooth.service | indent '    '
 }
 
-add_user() {
+add_users() {
   echo "Add Users" | section
 
   local sel user admin
@@ -377,6 +377,7 @@ install_menu() {
   set_root_password
   set_bootloader
   enable_services
+  add_users
   reboot_system
 }
 
