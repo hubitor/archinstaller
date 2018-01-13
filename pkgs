@@ -1,9 +1,7 @@
 base
 base-devel
 gnome
-gnome-calculator
-gnome-calendar
-gnome-dictionary
+gnome-extra
 firefox
 evince
 virt-manager
@@ -25,3 +23,5 @@ grub
 efibootmgr
 intel-ucode
 gdm
+bluez
+bluez-utils

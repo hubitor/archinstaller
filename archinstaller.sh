@@ -208,9 +208,7 @@ select_mirrors() {
 install_packages() {
   echo "Install Packages" | section
 
-  for pkg in $(cat "$PKGS"); do
-    pacstrap "$ROOT_MOUNT" "$pkg"
-  done
+  pacstrap "$ROOT_MOUNT" "$(cat "$PKGS")"
 }
 
 generate_fstab() {
@@ -314,11 +312,24 @@ set_bootloader() {
   install_grub
 }
 
+enable_services() {
+  echo "Enable Services" | section
+
+  echo "GDM"
+  arch-chroot "$ROOT_MOUNT" \
+    systemctl enable gdm.service | indent '    '
+
+  echo "NetworkManager"
+  arch-chroot "$ROOT_MOUNT" \
+    systemctl enable NetworkManager.service | indent '    '
+
+  echo "Bluetooth"
+  arch-chroot "$ROOT_MOUNT" \
+    systemctl enable bluetooth.service | indent '    '
+}
+
 reboot_system() {
   echo "You can reboot your system now." | section
-
-  arch-chroot "$ROOT_MOUNT" \
-    systemctl enable gdm.service
 
   echo "Press any key to reboot."
   read
@@ -344,6 +355,7 @@ install_menu() {
   configure_network
   set_root_password
   set_bootloader
+  enable_services
   reboot_system
 }
 
