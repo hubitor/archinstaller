@@ -208,13 +208,11 @@ select_mirrors() {
 install_packages() {
   echo "Install Packages" | section
 
-  local pkgs
-  readarray -t pkgs <<< "$(cat $PKGS)"
-  pacstrap "$ROOT_MOUNT" "${pkgs[@]}"
+  local pkg
 
-  #for pkg in $(cat "$PKGS"); do
-  #  pacstrap "$ROOT_MOUNT" "$pkg"
-  #done
+  for pkg in $(cat "$PKGS"); do
+    pacstrap "$ROOT_MOUNT" "$pkg"
+  done
 }
 
 generate_fstab() {
