@@ -330,6 +330,25 @@ enable_services() {
     systemctl enable bluetooth.service | indent '    '
 }
 
+add_user() {
+  echo "Add Users" | section
+
+  local sel user admin
+
+  while true; do
+    read -rp "Create a new user? [Y/n]: " sel
+    if [ "$sel" == "n" ]; then
+      break
+    else
+      read -rp "Username: " user
+      read -rp "User groups: " groups
+      
+      arch-chroot "$ROOT_MOUNT" \
+        useradd -mUG "$groups" "$user"
+    fi
+  done
+}
+
 reboot_system() {
   echo "You can reboot your system now." | section
 
