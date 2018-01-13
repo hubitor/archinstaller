@@ -261,6 +261,8 @@ set_root_password() {
 }
 
 install_grub() {
+  INSTALL_DISK="/dev/vda"
+  ROOT_MOUNT="/mnt"
   if [ "$BOOT_MODE" == "UEFI" ]; then
     arch-chroot "$ROOT_MOUNT" \
       grub-install \
@@ -339,7 +341,7 @@ install_menu() {
   reboot_system
 }
 
-install_menu
+#install_menu
 #set_keyboard_layout
 #verify_boot_mode
 #connect_internet
@@ -355,5 +357,5 @@ install_menu
 #set_hostname
 #configure_network
 #set_root_password
-#set_bootloader
+set_bootloader
 #reboot_system
