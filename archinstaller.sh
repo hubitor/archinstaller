@@ -22,6 +22,10 @@ BOOT_PART=
 SWAP_DISK=
 ROOT_PART=
 
+pexec() {
+  echo "$@"
+  $@
+}
 
 clr() {
   while read line; do
@@ -101,7 +105,7 @@ connect_internet() {
 update_system_clock() {
   echo "Ensure The System Clock Is Accurate" | section
   
-  timedatectl set-ntp true
+  pexec timedatectl set-ntp true
 }
 
 partition_disks() {
@@ -234,10 +238,12 @@ set_timezone() {
 set_locale() {
   echo "Set Locale" | section
 
-  echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
-  sleep 1
-  vim "$ROOT_MOUNT"/etc/locale.gen
-  arch-chroot "$ROOT_MOUNT" locale-gen
+  #echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
+  #sleep 1
+  #vim "$ROOT_MOUNT"/etc/locale.gen
+  #arch-chroot "$ROOT_MOUNT" locale-gen
+  echo "en_US.UTF-8 UTF-8" | tee "$ROOT_MOUNT"/etc/locale.gen
+  echo "LANG=en_US.UTF-8" | tee "$ROOT_MOUNT"/etc/locale.conf
 }
 
 set_hostname() {
