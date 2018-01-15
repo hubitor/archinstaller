@@ -16,7 +16,7 @@ BOLD="\033[1m"
 RED="\033[0;31m"
 
 # don't touch stuff
-BOOT_MODE=
+BOOT_MODE=UEFI
 INSTALL_DISK=
 BOOT_PART=
 SWAP_DISK=
@@ -113,7 +113,8 @@ connect_internet() {
 update_system_clock() {
   echo "Ensure The System Clock Is Accurate" | section
   
-  pexec timedatectl set-ntp true
+  echo "timedatectl set-ntp true"
+  timedatectl set-ntp true
 }
 
 partition_disks() {
@@ -160,9 +161,9 @@ partition_disks() {
     SWAP_PART="${parts[0]}"
     ROOT_PART="${parts[1]}"
   fi
-  #echo "boot: $BOOT_PART"
-  #echo "swap: $SWAP_PART"
-  #echo "main: $ROOT_PART"
+  echo "boot: $BOOT_PART"
+  echo "swap: $SWAP_PART"
+  echo "main: $ROOT_PART"
 }
 
 format_partitions() {
@@ -240,7 +241,8 @@ set_timezone() {
   arch-chroot "$ROOT_MOUNT" \
     ln -sf /usr/share/zoneinfo/"$REGION"/"$CITY" /etc/localtime
 
-  arch-chroot "$ROOT_MOUNT" hwclock --systohc
+  arch-chroot "$ROOT_MOUNT" \
+    hwclock --systohc
 }
 
 set_locale() {
@@ -248,9 +250,10 @@ set_locale() {
 
   #echo "Uncomment en_US.UTF-8 UTF-8 and other needed localizations in /etc/locale.gen"
   #sleep 1
-  #vim "$ROOT_MOUNT"/etc/locale.gen
-  #arch-chroot "$ROOT_MOUNT" locale-gen
-  echo "en_US.UTF-8 UTF-8" | tee "$ROOT_MOUNT"/etc/locale.gen
+  vim "$ROOT_MOUNT"/etc/locale.gen
+  arch-chroot "$ROOT_MOUNT" \
+    locale-gen
+  #echo "en_US.UTF-8 UTF-8" | tee "$ROOT_MOUNT"/etc/locale.gen
   echo "LANG=en_US.UTF-8" | tee "$ROOT_MOUNT"/etc/locale.conf
 }
 
@@ -260,7 +263,8 @@ set_hostname() {
   local hostname
   read -rp "Hostname: " hostname
 
-  arch-chroot "$ROOT_MOUNT" echo "$hostname" > /etc/hostname
+  arch-chroot "$ROOT_MOUNT" \
+    echo "$hostname" > /etc/hostname
   arch-chroot "$ROOT_MOUNT" \
     echo -e "127.0.1.1\t"$hostname".localdomain\t"$hostname"" > /etc/hostname
 }
@@ -273,7 +277,8 @@ configure_network() {
 set_root_password() {
   echo "Set Root Password" | section
 
-  arch-chroot "$ROOT_MOUNT" passwd
+  arch-chroot "$ROOT_MOUNT" \
+    passwd
 }
 
 install_grub() {
