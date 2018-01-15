@@ -13,6 +13,7 @@ git
 htop
 python2
 python3
+pypy3
 tmux
 tree
 vim
@@ -26,3 +27,4 @@ intel-ucode
 gdm
 bluez
 bluez-utils
+transmission

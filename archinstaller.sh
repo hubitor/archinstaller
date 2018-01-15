@@ -78,6 +78,14 @@ menu() {
   echo
 }
 
+install_aur() {
+  local pkg
+  pkg="$1"
+
+  arch-chroot "$ROOT_MOUNT" \
+    git clone https://aur.archlinux.org."$pkg".git "$pkg"
+}
+
 set_keyboard_layout() {
   echo "Set The Keyboard Layout" | section
   echo "This currently does nothing."
