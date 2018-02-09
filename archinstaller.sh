@@ -143,7 +143,7 @@ partition_disks() {
     
     # assign partition paths
     readarray -t parts <<< \
-      "$(lsblk -lnpo NAME,TYPE | grep part | awk '{print $1}')"
+      "$(lsblk -lnpo NAME,TYPE "$INSTALL_DISK" | grep part | awk '{print $1}')"
     BOOT_PART="${parts[0]}"
     SWAP_PART="${parts[1]}"
     ROOT_PART="${parts[2]}"
