@@ -28,7 +28,7 @@ python3
 rsync
 ssh
 tmux
-transmission
+transmission-gtk
 tree
 vim
 virt-manager

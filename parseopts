@@ -1,0 +1,145 @@
+#!/bin/bash
+
+parseopts() {
+  # parseopts $@ \
+  #   --
+  #   verbose?=v,verbose \  # boolean variable declaration
+  #   ofile=o,out-file \  # value assignment
+  local var val opt opts clargs
+  declare -A assignopts
+  declare -A boolopts
+
+  # collect the command line that needs to be processed
+  while [ "$1" != "--" ]; do
+    clargs="${clargs} ${1}"
+    shift
+  done
+  shift
+
+  # parse the variable, option pairs
+  while [ "$#" -gt 0 ]; do
+    var="$(echo "$1" | tr '=' ' ' | awk '{ print $1 }')"
+    opts="$(echo "$1" | tr '=' ' ' | awk '{ print $2 }')"
+    
+    # boolean variable
+    if [[ "$var" == *"?" ]]; then
+      boolopts[${var%?}]="$opts"
+    
+    # assignment variable
+    else
+      assignopts[$var]="$opts"
+    fi
+    shift
+  done
+
+  # parse the boolean clargs
+  for var in ${!boolopts[@]}; do
+    opts="${boolopts[$var]}"
+    val="$(_parseopt -b "$opts" $clargs)"
+    #echo "$var"="$val"
+    export "$var"="$val"
+  done
+    
+  # parse the assignment clargs
+  for var in ${!assignopts[@]}; do
+    opts="${assignopts[$var]}"
+    val="$(_parseopt "$opts" $clargs)"
+    #echo "$var"="$val"
+    export "$var"="$val"
+  done
+
+  unset opt2assign opt2bool
+}
+
+_parseopt() {
+    local len val sopt lopt bool opt opts="$1"
+    
+    # handle boolean flags
+    if [ "$opts" == "-b" ]; then
+      bool="true"
+      shift
+      opts="$1"
+    fi
+
+    # fish out long opts and short opts
+    for opt in $(echo "$opts" | tr ',' ' '); do
+      len="$(echo -n "$opt" | wc -m)"
+      if [ "$len" -eq 1 ]; then
+        sopt="$opt"
+      elif [ "$len" -gt 1 ]; then
+        lopt="$opt"
+      fi
+    done
+    
+    shift
+    while [ "$#" -gt 0 ]; do
+     
+      if [ $sopt ]; then
+        case "$1" in
+          
+          # -o file
+          -"$sopt")
+            if [ $bool ]; then
+              val="true"
+            else
+              shift
+              val="$1"
+            fi
+            ;;
+
+          # -ofile
+          -"$sopt"*)
+            if [ $bool ]; then
+              return 1
+            else
+              val="$(echo "$1" | sed "s/-"$sopt"//")"
+            fi
+            ;;
+        esac
+      fi
+      if [ $lopt ]; then
+        case "$1" in
+
+          # --out-file file
+          --"$lopt")
+            if [ $bool ]; then
+              val="true"
+            else
+              shift
+              val="$1"
+            fi
+            ;;
+
+          # --out-file=file
+          --"$lopt"=*)
+            if [ $bool ]; then
+              return 1
+            else
+              val="$(echo "$1" | sed "s/--"$lopt"=//")"
+            fi
+            ;;
+        esac
+      fi
+      shift
+    done
+    
+    [ $val ] && echo "$val"
+}
+
+parseopts $@
+#parseopts --in-file=file1 --out-file=file2 -v \
+#  -- \
+#  infile=i,in-file \
+#  outfile=o,out-file \
+#  verbose?=v,verbose
+#
+#echo "infile = $infile"
+#echo "outfile = $outfile"
+#echo "verbose = $verbose"
+
+#echo '#verbose'
+#_parseopt -b v,verbose -v -ofile0 -ifile1
+#
+#echo '#outfile'
+#_parseopt o,out-file -v -ofile0 -ifile1
+

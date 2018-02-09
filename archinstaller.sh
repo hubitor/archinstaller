@@ -138,8 +138,8 @@ partition_disks() {
     parted "$INSTALL_DISK" mklabel gpt
     parted "$INSTALL_DISK" mkpart primary fat32 0% 512m  # boot partition
     parted "$INSTALL_DISK" toggle 1 boot
-    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
-    parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
+    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 2G  # swap partition
+    parted "$INSTALL_DISK" mkpart primary btrfs 2G 100%  # main partition
     
     # assign partition paths
     readarray -t parts <<< \
@@ -150,8 +150,8 @@ partition_disks() {
   else
     # mbr and BIOS
     parted "$INSTALL_DISK" mklabel msdos
-    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 8G  # swap partition
-    parted "$INSTALL_DISK" mkpart primary ext4 8G 100%  # main partition
+    parted "$INSTALL_DISK" mkpart primary linux-swap 512M 2G  # swap partition
+    parted "$INSTALL_DISK" mkpart primary btrfs 2G 100%  # main partition
     parted "$INSTALL_DISK" toggle 2 boot
     
     # assign partition paths
@@ -182,7 +182,7 @@ format_partitions() {
 
   # main partition
   echo -e "\nFormat Main Partition: [$ROOT_PART]"
-  mkfs.ext4 "$ROOT_PART" 2>&1 | indent '    '
+  mkfs.btrfs "$ROOT_PART" 2>&1 | indent '    '
 }
 
 mount_filesystem() {
