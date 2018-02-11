@@ -350,6 +350,11 @@ enable_services() {
   echo "Bluetooth"
   arch-chroot "$ROOT_MOUNT" \
     systemctl enable bluetooth.service | indent '    '
+
+  echo "Cups"
+  arch-chroot "$ROOT_MOUNT" \
+    systemctl enable org.cups.cupsd.service | indent '    '
+
 }
 
 add_users() {

@@ -5,6 +5,7 @@ base-devel
 bash-completion
 bluez
 bluez-utils
+cups
 dconf-editor
 efibootmgr
 evince
