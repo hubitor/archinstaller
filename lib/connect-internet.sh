@@ -1,7 +1,7 @@
 if [ ! $CONNECT_INTERNET_LIB ]; then CONNECT_INTERNET_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 connect_internet() {
   echo "Check Internet Connectivity" | section

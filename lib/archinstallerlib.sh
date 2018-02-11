@@ -5,7 +5,6 @@ then ARCHINSTALLER_LIB=1
 . lib/configure-network.sh
 . lib/connect-internet.sh
 . lib/enable-services.sh
-. lib/files.log
 . lib/format-partitions.sh
 . lib/generate-fstab.sh
 . lib/install-aur.sh

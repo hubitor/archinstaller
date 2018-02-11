@@ -2,7 +2,7 @@ if [ ! $SET_LOCALE_LIB ]
 then SET_LOCALE_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 set_locale() {
   echo "Set Locale" | section

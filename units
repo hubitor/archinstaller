@@ -1,4 +1,4 @@
-gdm.service
-NetworkManager.service
-bluetooth.service
+#gdm.service
+#NetworkManager.service
+#bluetooth.service
 org.cups.cupsd.service

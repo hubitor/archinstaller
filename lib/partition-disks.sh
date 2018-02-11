@@ -2,7 +2,7 @@ if [ ! $PARTITION_DISKS_LIB ]
 then PARTITION_DISKS_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 BOOT_MODE=UEFI
 INSTALL_DISK=

@@ -1,8 +1,8 @@
 if [ ! $CONFIGURE_NETWORK ]
-then CONFIGURE_NETWORK
+then CONFIGURE_NETWORK=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 configure_network() {
   echo "Configure Network" | section

@@ -2,8 +2,8 @@ if [ ! $MOUNT_FILESYSTEM_LIB ]
 then MOUNT_FILESYSTEM_LIB=1
 
 # dependancies
-. style.sh
-. partition-disks.sh
+#. style.sh
+#. partition-disks.sh
 
 mount_filesystem() {
   echo "Mount Filesystems" | section

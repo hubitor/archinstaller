@@ -2,7 +2,7 @@ if [ ! $SELECT_MIRRORS_LIB ]
 then SELECT_MIRRORS_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 select_mirrors() {
   echo "Select Mirrors" | section

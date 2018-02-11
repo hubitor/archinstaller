@@ -2,7 +2,7 @@ if [ ! $ENABLE_SERVICES_LIB ]
 then ENABLE_SERVICES_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 enable_services() {
   echo "Enable Services" | section

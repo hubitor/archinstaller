@@ -2,7 +2,7 @@ if [ ! $VERIFY_BOOT_MODE_LIB ]
 then VERIFY_BOOT_MODE_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 verify_boot_mode() {
   echo "Verify Boot Mode" | section

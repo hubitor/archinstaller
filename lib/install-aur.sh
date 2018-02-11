@@ -1,7 +1,7 @@
 if [ ! $INSTALL_AUR_LIB ]; then INSTALL_AUR_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 # Install an aur pkg
 # usage: install_aur pkg_name

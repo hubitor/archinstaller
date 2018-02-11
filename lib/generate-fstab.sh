@@ -2,7 +2,7 @@ if [ ! $GENERATE_FSTAB_LIB ]
 then GENERATE_FSTAB_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 generate_fstab() {
   echo "Generate Fstab" | section
@@ -10,4 +10,4 @@ generate_fstab() {
   genfstab -U "$ROOT_MOUNT" >> "$ROOT_MOUNT"/etc/fstab
 }
 
-if  # GENERATE_FSTAB_LIB
+fi  # GENERATE_FSTAB_LIB

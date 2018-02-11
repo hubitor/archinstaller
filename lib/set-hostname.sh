@@ -2,7 +2,7 @@ if [ ! $SET_HOSTNAME_LIB ]
 then SET_HOSTNAME_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 set_hostname() {
   echo "Set Hostname" | section

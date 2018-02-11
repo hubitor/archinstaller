@@ -2,8 +2,8 @@ if [ ! $FORMAT_PARTITIONS_LIB ]
 then FORMAT_PARTITIONS_LIB=1
 
 # dependancies
-. style.sh
-. partition-disks.sh
+#. style.sh
+#. partition-disks.sh
 
 format_partitions() {
   echo "Format Disk Partitions" | section

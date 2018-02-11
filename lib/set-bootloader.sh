@@ -2,7 +2,7 @@ if [ ! $SET_BOOTLOADER_LIB ]
 then SET_BOOTLOADER_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 install_grub() {
   #INSTALL_DISK="/dev/vda"

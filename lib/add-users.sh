@@ -2,7 +2,7 @@ if [ ! $ADD_USERS_LIB ]
 then ADD_USERS_LIB=1
 
 # dependancies
-. style.sh
+#. style.sh
 
 add_users() {
   echo "Add Users" | section
