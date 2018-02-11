@@ -8,6 +8,7 @@ COUNTRY="United States"
 REGION="US"
 CITY="Central"
 PKGS="pkgs"
+UNITS="units"
 
 # color stuff
 CLEAR="\033[0m"
@@ -225,7 +226,9 @@ install_packages() {
   local pkg
 
   for pkg in $(cat "$PKGS"); do
-    pacstrap "$ROOT_MOUNT" "$pkg"
+    if [[ ! "$pkg" == "#"* ]]; then
+      echo pacstrap "$ROOT_MOUNT" "$pkg"
+    fi
   done
 }
 
@@ -339,22 +342,15 @@ set_bootloader() {
 enable_services() {
   echo "Enable Services" | section
 
-  echo "GDM"
-  arch-chroot "$ROOT_MOUNT" \
-    systemctl enable gdm.service | indent '    '
+  local unit
 
-  echo "NetworkManager"
-  arch-chroot "$ROOT_MOUNT" \
-    systemctl enable NetworkManager.service | indent '    '
-
-  echo "Bluetooth"
-  arch-chroot "$ROOT_MOUNT" \
-    systemctl enable bluetooth.service | indent '    '
-
-  echo "Cups"
-  arch-chroot "$ROOT_MOUNT" \
-    systemctl enable org.cups.cupsd.service | indent '    '
-
+  for unit in $(cat "$UNITS"); do
+    if [[ ! "$unit" == "#"* ]]; then
+      echo "$unit"
+      #arch-chroot "$ROOT_MOUNT" \
+      #  systemctl enable "$unit" | indent '    '
+    fi
+  done
 }
 
 add_users() {
@@ -413,20 +409,22 @@ install_menu() {
 }
 
 install_menu
-#set_keyboard_layout
-#verify_boot_mode
-#connect_internet
-#update_system_clock
-#partition_disks
-#format_partitions
-#mount_filesystem
-#select_mirrors
-#install_packages
-#generate_fstab
-#set_timezone
-#set_locale
-#set_hostname
-#configure_network
-#set_root_password
-#set_bootloader
-#reboot_system
+##set_keyboard_layout
+##verify_boot_mode
+##connect_internet
+##update_system_clock
+##partition_disks
+##format_partitions
+##mount_filesystem
+##select_mirrors
+##install_packages
+##generate_fstab
+##set_timezone
+##set_locale
+##set_hostname
+##configure_network
+##set_root_password
+##set_bootloader
+#enable_services
+##add_users
+##reboot_system
