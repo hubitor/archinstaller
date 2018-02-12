@@ -17,12 +17,6 @@ UNITS="units"
 
 reboot_system() {
   echo "You can reboot your system now." | section
-
-  echo "Press any key to reboot."
-  read
-  echo "Rebooting..."
-  sleep 2
-  reboot
 }
 
 install_menu() {

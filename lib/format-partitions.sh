@@ -21,7 +21,7 @@ format_partitions() {
 
   # main partition
   echo -e "\nFormat Main Partition: [$ROOT_PART]"
-  mkfs.btrfs "$ROOT_PART" 2>&1 | indent '    '
+  mkfs.btrfs -f "$ROOT_PART" 2>&1 | indent '    '
 }
 
 fi  # FORMAT_PARTITIONS_LIB

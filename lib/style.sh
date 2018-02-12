@@ -42,7 +42,6 @@ section() {
   while read line; do
     echo "$line" | bold
   done
-  sleep 1
 }
 
 indent() {
