@@ -1,3 +1,4 @@
+arch-install-scripts
 aspell
 aspell-en
 base
@@ -5,6 +6,7 @@ base-devel
 bash-completion
 #bluez
 #bluez-utils
+btrfs-progs
 cups
 dconf-editor
 efibootmgr
@@ -15,6 +17,7 @@ git
 #gnome-terminal
 grub
 htop
+i3
 intel-ucode
 linux-headers
 mplayer
