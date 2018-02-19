@@ -5,3 +5,6 @@ default:
 install:
 	./archinstaller.sh
 
+clean:
+	rm -rf shellib
+
