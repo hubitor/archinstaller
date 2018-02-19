@@ -18,6 +18,12 @@ partition_disks() {
   readarray -t disks <<< "$(lsblk -lnp)"
   
   # disk choice menu
+  #menu -s $'\n' \
+  #  -t 'Where do you want to install Arch?'\
+  #  -p 'Disk: ' \
+  #  -- "$(lsblk -lnp)"
+  #install_disk="$(echo "%RETURN" | awk '{print $1}')"
+  
   echo "$(lsblk -ln)" | menu "\nChoose a disk for the OS install:"
   read -rp "disk selection: " disk
   let "disk--"

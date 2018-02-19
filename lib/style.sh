@@ -38,6 +38,7 @@ error() {
 }
 
 section() {
+  #style -s bold -f green -- "$@"
   echo
   while read line; do
     echo "$line" | bold
