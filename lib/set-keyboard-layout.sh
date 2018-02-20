@@ -1,12 +1,10 @@
 if [ ! $SET_KEYBOARD_LAYOUT_LIB ]; then SET_KEYBOARD_LAYOUT_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 set_keyboard_layout() {
-
-  #section "Set The Keyboard Layout"
-  echo "Set The Keyboard Layout" | section
+  section "Set The Keyboard Layout"
   echo "This currently does nothing."
 }
 

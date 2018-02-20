@@ -2,26 +2,31 @@ if [ ! $FORMAT_PARTITIONS_LIB ]
 then FORMAT_PARTITIONS_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 #. partition-disks.sh
 
 format_partitions() {
-  echo "Format Disk Partitions" | section
+  section "Format Disk Partitions"
+
+  local boot="$1" root="$2" swap="$3"
 
   # boot partition
-  if [ "$BOOT_MODE" == "UEFI" ]; then
-    echo -e "\nFormat Boot Partition: [$BOOT_PART]"
-    mkfs.fat -F32 "$BOOT_PART" 2>&1 | indent '    '
-  fi
+  style -s bold -i '  ' -- \
+    "\nFormat Boot Partition: [$boot]"
+  mkfs.fat -F32 "$BOOT_PART" 2>&1 | style -i '    '
 
   # swap partition
-  echo -e "\nFormat Swap Partition: [$SWAP_PART]"
-  mkswap "$SWAP_PART" 2>&1 | indent '    '
-  swapon "$SWAP_PART" 2>&1 | indent '    '
+  if [ $swap ]; then
+    style -s bold -i '  ' -- \
+      "\nFormat Swap Partition: [$swap]"
+    mkswap "$swap" 2>&1 | style -i '    '
+    swapon "$swap" 2>&1 | style -i '    '
+  fi
 
   # main partition
-  echo -e "\nFormat Main Partition: [$ROOT_PART]"
-  mkfs.btrfs -f "$ROOT_PART" 2>&1 | indent '    '
+  style -s bold -i '  ' -- \
+    "\nFormat Main Partition: [$root]"
+  mkfs.btrfs -f "$ROOT_PART" 2>&1 | style -i '    '
 }
 
 fi  # FORMAT_PARTITIONS_LIB

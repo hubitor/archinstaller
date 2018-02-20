@@ -2,19 +2,21 @@ if [ ! $MOUNT_FILESYSTEM_LIB ]
 then MOUNT_FILESYSTEM_LIB=1
 
 # dependancies
-#. style.sh
-#. partition-disks.sh
+. shellib/lib/style
 
 mount_filesystem() {
-  echo "Mount Filesystems" | section
+  section "Mount Filesystems"
 
-  mount "$ROOT_PART" "$ROOT_MOUNT" | indent '    '
+  local boot="$1" root="$2" mnt="$3"
 
-  if [ "$BOOT_MODE" == "UEFI" ]; then
-    mkdir /mnt/boot
-    mount "$BOOT_PART" "$BOOT_MOUNT" | indent '    '
-  fi
+  # mount root partition
+  mount "$root" "$mnt" | style -i '    '
 
+  # mount boot partition
+  mkdir /mnt/boot
+  mount "$boot" "$mnt/boot" | style -i '    '
+
+  # show the user what happened
   lsblk
 }
 

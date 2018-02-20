@@ -1,14 +1,17 @@
 if [ ! $SET_TIMEZONE_LIB ]
 then SET_TIMEZONE_LIB=1
 
+. shellib/lib/style
+
 set_timezone() {
-  echo "Set Localtime" | section
-  echo "NOT IMPLEMENTED"
+  section "Set Localtime"
 
-  arch-chroot "$ROOT_MOUNT" \
-    ln -sf /usr/share/zoneinfo/"$REGION"/"$CITY" /etc/localtime
+  local mnt="$1" region="$2" city="$3"
 
-  arch-chroot "$ROOT_MOUNT" \
+  arch-chroot "$mnt" \
+    ln -sf /usr/share/zoneinfo/"$region"/"$city" /etc/localtime
+
+  arch-chroot "$mnt" \
     hwclock --systohc
 }
 

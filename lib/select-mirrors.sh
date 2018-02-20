@@ -2,15 +2,17 @@ if [ ! $SELECT_MIRRORS_LIB ]
 then SELECT_MIRRORS_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 select_mirrors() {
-  echo "Select Mirrors" | section
+  section "Select Mirrors"
 
-  cp "$MIRRORLIST" mirrorlist.bak
+  local mirrors="$1" country="$2"
+
+  cp "$mirrors" mirrorlist.bak
   cat mirrorlist.bak | awk '
     BEGIN {cond = 0}
-    /'"$COUNTRY"'/ {cond = 1}
+    /'"$country"'/ {cond = 1}
     {
       if (cond == 1) {
         print $0;
@@ -21,7 +23,7 @@ select_mirrors() {
         cond = 0;
       }
     }
-  ' | tee "$MIRRORLIST" | indent '    '
+  ' | tee "$mirrors" | style -i '    '
 }
 
 fi  # SELECT_MIRRORS_LIB

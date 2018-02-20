@@ -5,8 +5,8 @@ then UPDATE_SYSTEM_CLOCK_LIB=1
 #. style.sh
 
 update_system_clock() {
-  echo "Ensure The System Clock Is Accurate" | section
-  
+  section "Ensure The System Clock Is Accurate"
+
   echo "timedatectl set-ntp true"
   timedatectl set-ntp true
 }

@@ -2,18 +2,19 @@ if [ ! $SET_HOSTNAME_LIB ]
 then SET_HOSTNAME_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 set_hostname() {
-  echo "Set Hostname" | section
+  section "Set Hostname"
 
-  local hostname
+  local hostname mnt="$1"
+
   read -rp "Hostname: " hostname
 
-  arch-chroot "$ROOT_MOUNT" \
+  arch-chroot "$mnt" \
     echo "$hostname" > /etc/hostname
-  arch-chroot "$ROOT_MOUNT" \
-    echo -e "127.0.1.1\t"$hostname".localdomain\t"$hostname"" > /etc/hostname
+  arch-chroot "$mnt" \
+    echo -e "127.0.1.1\t${hostname}.localdomain\t${hostname}" > /etc/hostname
 }
 
 fi  # SET_HOSTNAME_LIB

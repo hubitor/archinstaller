@@ -1,18 +1,22 @@
-if [ ! $VERIFY_BOOT_MODE_LIB ]
-then VERIFY_BOOT_MODE_LIB=1
+if [ ! $VERIFY_boot_mode_LIB ]
+then VERIFY_boot_mode_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 verify_boot_mode() {
-  echo "Verify Boot Mode" | section
+  section "Verify Boot Mode"
+
+  local boot_mode
   
   if [ -e "/sys/firmware/efi/efivars" ]; then
-    BOOT_MODE="UEFI"
+    boot_mode="UEFI"
   else
-    BOOT_MODE="BIOS"
+    boot_mode="BIOS"
   fi
-  echo "Boot Mode: "$BOOT_MODE""
+  echo "Boot Mode: "$boot_mode""
+  
+  RETURN="$boot_mode"
 }
 
-fi  # VERIFY_BOOT_MODE_LIB
+fi  # VERIFY_boot_mode_LIB

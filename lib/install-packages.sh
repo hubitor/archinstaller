@@ -2,23 +2,23 @@ if [ ! $INSTALL_PKGS_LIB ]
 then INSTALL_PKGS_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 install_packages() {
-  echo "Install Packages" | section
+  Section "Install Packages"
 
-  local pkg pkgs environ root_mount="$1"
+  local pkg pkgs environ mnt="$1"
 
-  menu \
+  menu -c \
     -t 'What environment would you like to install?' \
     -p 'environ: ' \
     -- "$(ls environs)"
   environ="$RETURN"
   pkgs="environs/$environ/pkgs"
 
-  for pkg in $(cat "$PKGS"); do
+  for pkg in $(cat "$pkgs"); do
     if [[ ! "$pkg" == "#"* ]]; then
-      pacstrap "$ROOT_MOUNT" "$pkg"
+      pacstrap "$mnt" "$pkg"
     fi
   done
 

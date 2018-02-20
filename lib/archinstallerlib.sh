@@ -22,5 +22,7 @@ then ARCHINSTALLER_LIB=1
 . lib/style.sh
 . lib/update-system-clock.sh
 . lib/verify-boot-mode.sh
+. shellib/lib/style
+. shellib/lib/menu
 
 fi  # ARCHINSTALLER_LIB

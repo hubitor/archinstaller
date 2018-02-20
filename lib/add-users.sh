@@ -2,12 +2,12 @@ if [ ! $ADD_USERS_LIB ]
 then ADD_USERS_LIB=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 add_users() {
   echo "Add Users" | section
 
-  local sel user admin
+  local sel user mnt="$1"
 
   while true; do
     read -rp "Create a new user? [Y/n]: " sel
@@ -17,12 +17,11 @@ add_users() {
       read -rp "Username: " user
       read -rp "User groups: " groups
       
-      arch-chroot "$ROOT_MOUNT" \
+      arch-chroot "$mnt" \
         useradd -mUG "$groups" "$user"
 
-      arch-chroot "$ROOT_MOUNT" \
+      arch-chroot "$mnt" \
         passwd "$user"
-
     fi
   done
 }

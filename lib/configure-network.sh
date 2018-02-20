@@ -2,10 +2,10 @@ if [ ! $CONFIGURE_NETWORK ]
 then CONFIGURE_NETWORK=1
 
 # dependancies
-#. style.sh
+. shellib/lib/style
 
 configure_network() {
-  echo "Configure Network" | section
+  section "Configure Network"
   echo "doesnt do anything"
 }
 
