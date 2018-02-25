@@ -20,10 +20,10 @@ uefi_partition() {
   install_disk="$(echo "$RETURN" | awk '{print $1}')"
 
   # swap
-  menu \
+  menu -s ":" \
     -t '\nWould you like to install a swap partition? ' \
     -p '#? ' \
-    -- yes no
+    -- yes:no
   swapon="$RETURN"
   if [ "$swapon" == 'yes' ]; then
     echo
@@ -59,7 +59,7 @@ uefi_partition() {
   RETURN_INSTALL="$install_disk"
   RETURN_BOOT="${parts[0]}"
   RETURN_FMT="$fs"
-  if [ $swapon ]; then
+  if [ "$swapon" == "yes" ]; then
     RETURN_SWAP="${parts[1]}"
     RETURN_ROOT="${parts[2]}"
   else
