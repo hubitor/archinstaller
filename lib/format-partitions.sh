@@ -10,8 +10,8 @@ format_partitions() {
 
   local boot="$1" 
   local root="$2" 
-  local swap="$3"
-  local fmt="$4"
+  local fmt="$3"
+  local swap="$4"
 
   # boot partition
   style -s bold -i '  ' -- \

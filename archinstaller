@@ -19,7 +19,7 @@ main() {
     root_part="$RETURN_ROOT"
     swap_part="$RETURN_SWAP"
     root_fmt="$RETURN_FMT"
-  format_partitions "$boot_part" "$root_part" "$swap_part" "$root_fmt"
+  format_partitions "$boot_part" "$root_part" "$root_fmt" "$swap_part"
   mount_filesystem "$boot_part" "$root_part" "$mnt"
   select_mirrors /etc/pacman.d/mirrorlist "United States"
   install_packages "$mnt"
