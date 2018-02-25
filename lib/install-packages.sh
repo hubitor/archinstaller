@@ -33,6 +33,7 @@ _paclist() {
     if [[ ! "$pkg" == "#"* ]]; then
       style -s bold -b green -f white -- \
         "installing: [$pkg]"
+      read
       pacstrap "$mnt" "$pkg"
     fi
   done
