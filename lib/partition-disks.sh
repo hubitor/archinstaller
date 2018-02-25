@@ -33,10 +33,10 @@ uefi_partition() {
   fi
 
   # main file system
-  menu \
+  menu -s ":" \
     -t '\nWhat file system do you want for your root file system?' \
     -p 'fs: ' \
-    -- ext4 btrfs
+    -- ext4:btrfs
   fs="$RETURN"
 
   # create the disk label and boot partition
@@ -58,6 +58,7 @@ uefi_partition() {
 
   RETURN_INSTALL="$install_disk"
   RETURN_BOOT="${parts[0]}"
+  RETURN_FMT="$fs"
   if [ $swapon ]; then
     RETURN_SWAP="${parts[1]}"
     RETURN_ROOT="${parts[2]}"

@@ -8,7 +8,10 @@ then FORMAT_PARTITIONS_LIB=1
 format_partitions() {
   section "Format Disk Partitions"
 
-  local boot="$1" root="$2" swap="$3"
+  local boot="$1" 
+  local root="$2" 
+  local swap="$3"
+  local fmt="$4"
 
   # boot partition
   style -s bold -i '  ' -- \
@@ -25,8 +28,12 @@ format_partitions() {
 
   # main partition
   style -s bold -i '  ' -- \
-    "\nFormat Main Partition: [$root]"
-  mkfs.btrfs -f "$ROOT_PART" 2>&1 | style -i '    '
+    "\nFormat Main Partition: [$root] -- $fmt"
+  if [ "$fmt" == "btrfs" ]; then
+    mkfs.btrfs -f "$root" 2>&1 | style -i '    '
+  elif [ "$fmt" == "ext4" ]; then
+    mkfs.ext4 "$root"
+  fi
 }
 
 fi  # FORMAT_PARTITIONS_LIB

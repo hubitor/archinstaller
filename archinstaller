@@ -4,7 +4,7 @@
 . lib/archinstallerlib.sh
 
 main() {
-  local boot_part root_part swap_part environ 
+  local boot_part root_part swap_part root_fmt environ 
   local mnt="/mnt"
   local region="US"
   local city="Central"
@@ -18,7 +18,8 @@ main() {
     boot_part="$RETURN_BOOT"
     root_part="$RETURN_ROOT"
     swap_part="$RETURN_SWAP"
-  format_partitions "$boot_part" "$root_part" "$swap_part"
+    root_fmt="$RETURN_FMT"
+  format_partitions "$boot_part" "$root_part" "$swap_part" "$root_fmt"
   mount_filesystem "$boot_part" "$root_part" "$mnt"
   select_mirrors /etc/pacman.d/mirrorlist "United States"
   install_packages "$mnt"
