@@ -1,4 +1,5 @@
 #gdm.service
 #NetworkManager.service
 #bluetooth.service
+#dhcpcd.service
 org.cups.cupsd.service

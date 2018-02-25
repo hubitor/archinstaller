@@ -27,7 +27,7 @@ main() {
   set_timezone "$mnt" "$region" "$city"
   set_locale "$mnt"
   set_hostname "$mnt"
-  configure_network
+  configure_network "$mnt" "$environ"
   set_root_password "$mnt"
   install_grub "$mnt"
   enable_services "$mnt" "environs/$environ/units"

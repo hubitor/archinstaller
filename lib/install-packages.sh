@@ -14,15 +14,26 @@ install_packages() {
     -p 'environ: ' \
     -- "$(ls environs)"
   environ="$RETURN"
-  pkgs="environs/$environ/pkgs"
+
+  # install universal pkgs
+  _paclist "$mnt" "environs/pkgs"
+
+  # install environment pkgs
+  _paclist "$mnt" "environs/$environ/pkgs"
+
+  RETURN="$environ"
+}
+
+_paclist() {
+  local mnt="$1"
+  local pkgs="$2"
+  local pkg
 
   for pkg in $(cat "$pkgs"); do
     if [[ ! "$pkg" == "#"* ]]; then
       pacstrap "$mnt" "$pkg"
     fi
   done
-
-  RETURN="$environ"
 }
 
 fi  # INSTALL_PKGS_LIB
