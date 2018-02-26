@@ -53,14 +53,14 @@ _netctl() {
     case "$intr" in
       w*)
         echo
-        if confirm "Enable wifi interface {$intr}?"; then
+        if confirm -y "Enable wifi interface {$intr}?"; then
           arch-chroot "$mnt" \
             systemctl enable netctl-auto@"$intr".service
         fi
         ;;
       e*)
         echo
-        if confirm "Enable ethernet interface {$intr}?"; then
+        if confirm -y "Enable ethernet interface {$intr}?"; then
           arch-chroot "$mnt" \
             systemctl enable netctl-ifplugd@"$intr".service
         fi
