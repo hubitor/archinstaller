@@ -16,7 +16,7 @@ format_partitions() {
   # boot partition
   style -s bold -i '  ' -- \
     "\nFormat Boot Partition: [$boot]"
-  mkfs.fat -F32 "$BOOT_PART" 2>&1 | style -i '    '
+  mkfs.fat -F32 "$boot" 2>&1 | style -i '    '
 
   # swap partition
   if [ $swap ]; then
