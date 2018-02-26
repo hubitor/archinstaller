@@ -34,7 +34,8 @@ main() {
   enable_services "$mnt" "environs/$environ/units"
   add_users "$mnt"
   
-  style -s bold -- 'you can reboot your system now.'
+  style -s bold -- \
+    'You can reboot your system now.'
 }
 
 main

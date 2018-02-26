@@ -20,12 +20,8 @@ uefi_partition() {
   install_disk="$(echo "$RETURN" | awk '{print $1}')"
 
   # swap
-  menu -s ":" \
-    -t '\nWould you like to install a swap partition? ' \
-    -p '#? ' \
-    -- yes:no
-  swapon="$RETURN"
-  if [ "$swapon" == 'yes' ]; then
+  echo
+  if confirm "Do you want to install a swap partition?"; then
     echo
     read -rp 'How big? You can use [K,M,G] like "2G": ' swap
   else
@@ -38,6 +34,10 @@ uefi_partition() {
     -p 'fs: ' \
     -- ext4:btrfs
   fs="$RETURN"
+
+  # wipe the disk
+  parted "$install_disk" mklabel msdos
+  parted "$install_disk" mklabel gpt
 
   # create the disk label and boot partition
   parted "$install_disk" mklabel gpt

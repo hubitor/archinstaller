@@ -3,17 +3,16 @@ then ADD_USERS_LIB=1
 
 # dependancies
 . shellib/lib/style
+. shellib/lib/menu
 
 add_users() {
-  echo "Add Users" | section
+  section "Add Users"
 
   local sel user mnt="$1"
 
   while true; do
-    read -rp "Create a new user? [Y/n]: " sel
-    if [ "$sel" == "n" ]; then
-      break
-    else
+
+    if confirm "Create a new user?"; then
       read -rp "Username: " user
       read -rp "User groups: " groups
       
@@ -22,6 +21,8 @@ add_users() {
 
       arch-chroot "$mnt" \
         passwd "$user"
+    else
+      break
     fi
   done
 }

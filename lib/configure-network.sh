@@ -3,6 +3,7 @@ then CONFIGURE_NETWORK=1
 
 # dependancies
 . shellib/lib/style
+. shellib/lib/menu
 
 configure_network() {
   section "Configure Network"
@@ -29,18 +30,52 @@ configure_network() {
       _netctl "$mnt"
       ;;
     NetworkManager)
-      echo "nothing"
+      _NetworkManager "$mnt"
       ;;
   esac
+  
+  # and dhcpcd
+  arch-chroot "$mnt" \
+    systemctl enable dhcpcd.service
 }
 
 _netctl() {
   local mnt="$1"
-  local pkgs=(ifplugd wpa_actiond)
+  local pkgs=(ifplugd wpa_actiond dhcpcd)
   
+  # download pkgs
   for pkg in ${pkgs[@]}; do
     pacstrap "$mnt" "$pkg"
   done
+
+  # auto connections
+  for intr in $(ip -br link | awk '{print $1}'); do
+    case "$intr" in
+      w*)
+        echo wifi: $intr
+        if confirm "Enable wifi interface {$intr}?"; then
+          arch-chroot "$mnt" \
+            systemctl enable netctl-auto@"$intr".service
+        fi
+        ;;
+      e*)
+        if confirm "Enable ethernet interface {$intr}?"; then
+          arch-chroot "$mnt" \
+            systemctl enable netctl-ifplugd@"$intr".service
+        fi
+        ;;
+      l*)
+        echo loop: $intr
+    esac
+  done
+
+}
+
+_NetworkManager() {
+  local mnt="$1"
+
+  arch-chroot "$mnt" \
+    systemctl enable NetworkManager.service
 }
 
 fi  # CONFIGURE_NETWORK
