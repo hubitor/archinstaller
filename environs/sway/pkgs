@@ -1,9 +1,11 @@
 cups
 dhcpcd
 evince
+dmenu
 firefox
 gimp
 i3status
+imagemagick
 pavucontrol
 pianobar
 pulseaudio
