@@ -4,8 +4,12 @@ evince
 firefox
 gimp
 i3status
+pavucontrol
 pianobar
 pulseaudio
+pulseaudio-alsa
+pulseaudio-bluetooth
+pulseaudio-equalizer
 sway
 termite
 virt-manager

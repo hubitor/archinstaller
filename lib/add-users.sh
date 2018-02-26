@@ -12,7 +12,7 @@ add_users() {
 
   while true; do
 
-    if confirm "Create a new user?"; then
+    if confirm -y "Create a new user?"; then
       read -rp "Username: " user
       read -rp "User groups: " groups
       
