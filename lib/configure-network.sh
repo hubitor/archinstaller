@@ -52,13 +52,14 @@ _netctl() {
   for intr in $(ip -br link | awk '{print $1}'); do
     case "$intr" in
       w*)
-        echo wifi: $intr
+        echo
         if confirm "Enable wifi interface {$intr}?"; then
           arch-chroot "$mnt" \
             systemctl enable netctl-auto@"$intr".service
         fi
         ;;
       e*)
+        echo
         if confirm "Enable ethernet interface {$intr}?"; then
           arch-chroot "$mnt" \
             systemctl enable netctl-ifplugd@"$intr".service
