@@ -31,7 +31,7 @@ _paclist() {
 
   for pkg in $(cat "$pkgs"); do
     if [[ ! "$pkg" == "#"* ]]; then
-      style -s bold -b green -f black -- \
+      style -s bold -b green -f white -- \
         "installing: [$pkg] @ $mnt"
       pacstrap "$mnt" "$pkg"
     fi
