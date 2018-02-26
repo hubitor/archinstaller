@@ -24,6 +24,7 @@ uefi_partition() {
   if confirm "Do you want to install a swap partition?"; then
     echo
     read -rp 'How big? You can use [K,M,G] like "2G": ' swap
+    swapon='true'
   else
     swap="512M"
   fi
@@ -45,7 +46,7 @@ uefi_partition() {
   parted -s "$install_disk" toggle 1 boot
 
   # swap partition
-  if [ "$swapon" == 'yes' ]; then
+  if [ "$swapon" == 'true' ]; then
     parted -s "$install_disk" mkpart primary linux-swap 512M "$swap"
   fi
 
@@ -59,7 +60,7 @@ uefi_partition() {
   RETURN_INSTALL="$install_disk"
   RETURN_BOOT="${parts[0]}"
   RETURN_FMT="$fs"
-  if [ "$swapon" == "yes" ]; then
+  if [ "$swapon" == 'true' ]; then
     RETURN_SWAP="${parts[1]}"
     RETURN_ROOT="${parts[2]}"
   else
