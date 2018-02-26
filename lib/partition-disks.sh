@@ -36,21 +36,21 @@ uefi_partition() {
   fs="$RETURN"
 
   # wipe the disk
-  parted "$install_disk" mklabel msdos
-  parted "$install_disk" mklabel gpt
+  parted -s "$install_disk" mklabel msdos
+  parted -s "$install_disk" mklabel gpt
 
   # create the disk label and boot partition
-  parted "$install_disk" mklabel gpt
-  parted "$install_disk" mkpart primary fat32 0% 512M
-  parted "$install_disk" toggle 1 boot
+  parted -s "$install_disk" mklabel gpt
+  parted -s "$install_disk" mkpart primary fat32 0% 512M
+  parted -s "$install_disk" toggle 1 boot
 
   # swap partition
   if [ "$swapon" == 'yes' ]; then
-    parted "$install_disk" mkpart primary linux-swap 512M "$swap"
+    parted -s "$install_disk" mkpart primary linux-swap 512M "$swap"
   fi
 
   # main partition
-  parted "$install_disk" mkpart primary "$fs" "$swap" 100%
+  parted -s "$install_disk" mkpart primary "$fs" "$swap" 100%
 
   # assign partition paths
   readarray -t parts <<< \
